@@ -35,7 +35,7 @@ function Header() {
               <NavLink to="/category">Category</NavLink>
             </li>
             <li>
-              //<NavLink to="/register">Register</NavLink>
+              <NavLink to="/register">Register</NavLink>
             </li>
             <li>
               <NavLink to="/login">Login</NavLink>
