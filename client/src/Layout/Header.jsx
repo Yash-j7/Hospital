@@ -87,13 +87,29 @@ function Header() {
           ) : (
             <>
               <li>
-                <NavLink
-                  onClick={handleLogout}
-                  to="/"
-                  className="hover:border-b-2"
-                >
-                  Logout
-                </NavLink>
+                <details>
+                  <summary>{auth?.user?.name}</summary>
+                  <ul className="bg-base-100 rounded-t-none p-2">
+                    <li>
+                      <NavLink
+                        to={`/dashboard/${
+                          auth?.user?.role === 1 ? "admin" : "user"
+                        }`}
+                      >
+                        Dashboard
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={handleLogout}
+                        to="/"
+                        className="hover:border-b-2"
+                      >
+                        Logout
+                      </NavLink>
+                    </li>
+                  </ul>
+                </details>
               </li>
             </>
           )}

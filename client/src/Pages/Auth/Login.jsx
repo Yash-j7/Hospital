@@ -82,7 +82,7 @@ function Login() {
               <button
                 type="submit"
                 onClick={() => {
-                  navigate("/forgot-password");
+                  navigate("/forgotPassword");
                 }}
                 className="w-full bg-red-300 hover:bg-red-500 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
