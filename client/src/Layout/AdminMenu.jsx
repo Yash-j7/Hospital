@@ -9,36 +9,51 @@ const AdminMenu = () => {
         <nav className="space-y-2">
           <NavLink
             to="/dashboard/admin/create-category"
-            className="block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300"
-            activeClassName="bg-blue-500 text-white"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
+                isActive ? "bg-blue-500 text-white" : ""
+              }`
+            }
           >
             Create Category
           </NavLink>
           <NavLink
             to="/dashboard/admin/create-product"
-            className="block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300"
-            activeClassName="bg-blue-500 text-white"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
+                isActive ? "bg-blue-500 text-white" : ""
+              }`
+            }
           >
             Create Product
           </NavLink>
-          {/* <NavLink
+          <NavLink
             to="/dashboard/admin/products"
-            className="block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300"
-            activeClassName="bg-blue-500 text-white"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
+                isActive ? "bg-blue-500 text-white" : ""
+              }`
+            }
           >
             Products
-          </NavLink> */}
-          {/* <NavLink
-            to="/dashboard/admin/users"
-            className="block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300"
-            activeClassName="bg-blue-500 text-white"
+          </NavLink>
+          <NavLink
+            to="/dashboard/admin/orders"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
+                isActive ? "bg-blue-500 text-white" : ""
+              }`
+            }
           >
-            Users
-          </NavLink> */}
+            Orders
+          </NavLink>
           <NavLink
             to="/dashboard/admin/users"
-            className="block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300"
-            activeClassName="bg-blue-500 text-white"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
+                isActive ? "bg-blue-500 text-white" : ""
+              }`
+            }
           >
             Users
           </NavLink>

@@ -5,12 +5,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/auth";
 import { Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Option } = Select;
 
-function CreateProduct() {
+function UpdateProduct() {
   const [auth] = useAuth();
+  const params = useParams();
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
@@ -19,8 +20,34 @@ function CreateProduct() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
+  const [id, setId] = useState("");
 
-  // Fetch categories from the API
+  const getSingleProduct = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8080/api/v1/product/get-product/${params.slug}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      );
+      setName(data.product.name);
+      setCategory(data.product.category._id);
+      setDescription(data.product.description);
+      setPrice(data.product.price);
+      setQuantity(data.product.quantity);
+      setShipping(data.product.shipping);
+      setId(data.product._id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getSingleProduct();
+  }, []);
+
+  //   // Fetch categories from the API
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
@@ -47,8 +74,8 @@ function CreateProduct() {
 
   const navigate = useNavigate();
 
-  // Handle form submission
-  const handleCreate = async (e) => {
+  //const Handle form submission
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     try {
@@ -63,13 +90,13 @@ function CreateProduct() {
         productData.append("photo", photo);
       }
 
-      const { data } = await axios.post(
-        "http://localhost:8080/api/v1/product/create-product",
+      const { data } = await axios.put(
+        `http://localhost:8080/api/v1/product/update-product/${id}`,
         productData,
         {
           headers: {
             Authorization: auth?.token,
-            "Content-Type": "multipart/form-data",
+            //"Content-Type": "multipart/form-data",
           },
         }
       );
@@ -78,16 +105,37 @@ function CreateProduct() {
         setTimeout(() => {
           navigate("/dashboard/admin/products");
         }, 1500);
-        toast.success("Product created successfully");
+        toast.success("Product updated successfully");
       } else {
         toast.error(data?.message || "Something went wrong");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong in creating product");
+      toast.error("Something went wrong in upadating product");
     }
   };
+  const handleDelete = async () => {
+    try {
+      let answer = window.prompt("Are you sure, you want to delete");
+      if (!answer) return;
+      const { data } = await axios.delete(
+        `http://localhost:8080/api/v1/product/delete-product/${id}`,
+        {
+          headers: {
+            Authorization: auth?.token,
+            //"Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
+      toast.success("Product deleted successfully");
+      navigate("/dashboard/admin/products");
+      setTimeout(() => {}, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong in handleDelete");
+    }
+  };
   return (
     <Layout>
       <div className="container mx-auto py-4">
@@ -96,8 +144,8 @@ function CreateProduct() {
             <AdminMenu />
           </div>
           <div className="col-span-9">
-            <h1 className="text-2xl font-bold mb-4">Create Product</h1>
-            <form onSubmit={handleCreate}>
+            <h1 className="text-2xl font-bold mb-4">Update Product</h1>
+            <form>
               <div>
                 <label className="block mb-2">Category</label>
                 <Select
@@ -105,6 +153,7 @@ function CreateProduct() {
                   size="large"
                   className="w-full border rounded-lg"
                   onChange={(val) => setCategory(val)}
+                  value={category}
                 >
                   {categories.map((category) => (
                     <Option key={category._id} value={category._id}>
@@ -121,18 +170,27 @@ function CreateProduct() {
                   className="w-full border rounded-lg p-2"
                   onChange={(e) => setPhoto(e.target.files[0])}
                 />
-                <div>
-                  {photo && (
-                    <div className="text-center">
-                      <img
-                        src={URL.createObjectURL(photo)}
-                        alt="product_photo"
-                        height={"200px"}
-                        className="img h-[200px]"
-                      />
-                    </div>
-                  )}
-                </div>
+              </div>
+              <div>
+                {photo ? (
+                  <div className="text-center">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="product_photo"
+                      height={"200px"}
+                      className="img h-[200px]"
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <img
+                      src={`http://localhost:8080/api/v1/product/product-photo/${id}`}
+                      alt="product_photo"
+                      height={"200px"}
+                      className="img h-[200px]"
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <input
@@ -175,7 +233,8 @@ function CreateProduct() {
                   placeholder="Select shipping option"
                   size="large"
                   className="w-full border rounded-lg"
-                  onChange={(val) => setShipping(val)}
+                  onChange={(value) => setShipping(value)}
+                  value={shipping ? "yes" : "no"}
                 >
                   <Option value="0">No</Option>
                   <Option value="1">Yes</Option>
@@ -185,8 +244,18 @@ function CreateProduct() {
                 <button
                   type="submit"
                   className="w-full bg-blue-500 text-white rounded-lg p-2"
+                  onClick={handleUpdate}
                 >
-                  CREATE PRODUCT
+                  UPDATE PRODUCT
+                </button>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-red-500 text-white rounded-lg p-2 mt-2"
+                  onClick={handleDelete}
+                >
+                  DELETE PRODUCT
                 </button>
               </div>
             </form>
@@ -197,4 +266,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default UpdateProduct;

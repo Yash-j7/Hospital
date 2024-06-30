@@ -66,7 +66,7 @@ export const getCategoryController = async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        res.stats(500).send({
+        res.status(500).send({
             success : false,
             error,
             message:"error in get category"
