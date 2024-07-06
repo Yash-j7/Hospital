@@ -190,3 +190,104 @@ export const getProductController = async (req, res) => {
       });
     }
   };
+
+
+  export const productFilterController = async (req, res) => {
+    try {
+      const { checked, radio } = req.body;
+      let args = {};
+      if (checked.length > 0) args.category = { $in: checked };
+      if (radio.length > 0) args.price = { $gte: radio[0], $lte: radio[1] };
+  
+      const products = await productModel.find(args);
+      res.status(200).send({
+        success: true,
+        products
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "Error in filter handling"
+      });
+    }
+  };
+  
+  export const productCountController = async (req, res) => {
+    try {
+      const total = await productModel.find({}).estimatedDocumentCount();
+      res.status(200).send({
+        success: true,
+        total,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        message: "Error in product count",
+        error,
+        success: false,
+      });
+    }
+  };
+  
+  // product list base on page
+  export const productListController = async (req, res) => {
+    try {
+      const perPage = 3;
+      const page = req.params.page ? req.params.page : 1;
+      const products = await productModel
+        .find({})
+        .select("-photo")
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 });
+      res.status(200).send({
+        success: true,
+        products,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "error in per page ctrl",
+        error,
+      });
+    }
+  };
+
+
+  export const searchController = async (req, res) => {
+    try {
+      let { keyword } = req.params;
+  
+      // Ensure keyword is a string
+      if (typeof keyword !== 'string') {
+        throw new Error('Keyword must be a string');
+      }
+  
+      // Handle empty keyword
+      if (!keyword.trim()) {
+        throw new Error('Keyword cannot be empty');
+      }
+  
+      const results = await productModel
+        .find({
+          $or: [
+            { name: { $regex: keyword, $options: "i" } },
+            { description: { $regex: keyword, $options: "i" } },
+          ],
+        })
+        .select("-photo");
+        
+      res.json(results);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "Error In Search Product API",
+        error,
+      });
+    }
+  };
+  
+  

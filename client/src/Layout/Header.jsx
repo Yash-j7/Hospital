@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
+import SearchForm from "./../Pages/form/SearchForm";
 
 function Header() {
   const [auth, setAuth] = useAuth();
@@ -89,7 +90,7 @@ function Header() {
               <li>
                 <details>
                   <summary>{auth?.user?.name}</summary>
-                  <ul className="bg-base-100 rounded-t-none p-2">
+                  <ul className="bg-base-100 rounded-t-none p-2 z-10">
                     <li>
                       <NavLink
                         to={`/dashboard/${
@@ -148,6 +149,9 @@ function Header() {
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
               </svg>
             </label>
+          </li>
+          <li>
+            <SearchForm />
           </li>
         </ul>
       </div>
