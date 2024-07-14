@@ -6,6 +6,7 @@ import { Prices } from "./Prices";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { useAuth } from "../context/auth.jsx"; // Import useAuth
+import { useCart } from "../context/CartContext.jsx";
 
 const { Meta } = Card;
 
@@ -14,13 +15,13 @@ function HomePage() {
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
-  const [cart, setCart] = useState([]); // Define cart state
+  //const [cart, setCart] = useState([]); // Define cart state
+  const [cart, setCart] = useCart(); // Define cart state
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth(); // Use auth from context
-
   const getProducts = async () => {
     try {
       setLoading(true);

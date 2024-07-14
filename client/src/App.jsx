@@ -19,12 +19,21 @@ import Profle from "./Pages/user/Profle.jsx";
 import Products from "./Pages/Admin/Products.jsx";
 import UpdateProduct from "./Pages/Admin/UpdateProduct";
 import Search from "./Pages/Search.jsx";
+import DetailedProduct from "./Pages/DetailedProduct.jsx";
+import Categories from "./Pages/Categories.jsx";
+import CategoryProduct from "./Pages/CategoryProduct.jsx";
+import Cart from "./Pages/Cart";
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/category" element={<Categories />} />
+        <Route path="/category/:slug" element={<CategoryProduct />} />
+
+        <Route path="/product/:slug" element={<DetailedProduct />} />
 
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />

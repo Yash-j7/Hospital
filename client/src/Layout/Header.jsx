@@ -1,11 +1,14 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import SearchForm from "./../Pages/form/SearchForm";
-
+import useCategory from "../hooks/useCategory.jsx";
+import { useCart } from "../context/CartContext.jsx";
 function Header() {
   const [auth, setAuth] = useAuth();
+  const [cart] = useCart();
+  const categories = useCategory();
 
   const handleLogout = () => {
     setAuth({
@@ -67,10 +70,22 @@ function Header() {
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/category" className="hover:border-b-2">
-              Category
-            </NavLink>
+          <li className="">
+            <details className="dropdown">
+              <summary className="">category</summary>
+              <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                <li>
+                  <Link to="/category">All categories</Link>
+                </li>
+                {categories?.map((c) => {
+                  return (
+                    <li className="m-1" key={c.id}>
+                      <Link to={`/category/${c.slug}`}>{c.name}</Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
           </li>
           {!auth.user ? (
             <>
@@ -156,7 +171,9 @@ function Header() {
         </ul>
       </div>
       <div className="navbar-end">
-        <NavLink className="btn">Cart[0]</NavLink>
+        <NavLink className="btn" to="/cart">
+          cart:{cart?.length}
+        </NavLink>
       </div>
     </div>
   );
