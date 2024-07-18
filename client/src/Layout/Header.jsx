@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import SearchForm from "./../Pages/form/SearchForm";
 import useCategory from "../hooks/useCategory.jsx";
 import { useCart } from "../context/CartContext.jsx";
+
 function Header() {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+  );
+
+  useEffect(() => {
+    const element = document.documentElement;
+    if (theme === "dark") {
+      element.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      element.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [theme]);
 
   const handleLogout = () => {
     setAuth({
       ...auth,
-      user: null, // Corrected typo: Changed numm to null
+      user: null,
       token: "",
     });
 
@@ -130,7 +145,7 @@ function Header() {
             </>
           )}
           <li>
-            <label className="flex cursor-pointer gap-2">
+            {/* <label className="flex cursor-pointer gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -149,6 +164,8 @@ function Header() {
                 type="checkbox"
                 value="synthwave"
                 className="toggle theme-controller"
+                onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+                checked={theme === "dark"}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +180,7 @@ function Header() {
               >
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
               </svg>
-            </label>
+            </label> */}
           </li>
           <li>
             <SearchForm />

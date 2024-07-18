@@ -23,9 +23,10 @@ import DetailedProduct from "./Pages/DetailedProduct.jsx";
 import Categories from "./Pages/Categories.jsx";
 import CategoryProduct from "./Pages/CategoryProduct.jsx";
 import Cart from "./Pages/Cart";
+import AdminOrders from "./Pages/Admin/AdminOrders.jsx";
 function App() {
   return (
-    <>
+    <div className="dark:bg-slate-900 dark:text-white">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<Search />} />
@@ -44,6 +45,8 @@ function App() {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
+          <Route path="admin/orders" element={<AdminOrders />} />
+
           <Route
             path="admin/update-product/:slug"
             element={<UpdateProduct />}
@@ -62,7 +65,7 @@ function App() {
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </>
+    </div>
   );
 }
 
