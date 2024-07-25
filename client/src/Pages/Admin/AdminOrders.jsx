@@ -14,7 +14,7 @@ function AdminOrders() {
     "Not Process",
     "Processing",
     "Shipped",
-    "deliverd",
+    "delivered",
     "cancel",
   ]);
   const getOrders = async () => {
