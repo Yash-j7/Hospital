@@ -7,12 +7,12 @@ function Layout({ children }) {
   return (
     <div>
       <Header />
-      <main className="min-h-[70vh]">
+      <main className="">
         <Toaster />
         {children}
       </main>
-
       <Footer />
+      min-h-[70vh]
     </div>
   );
 }

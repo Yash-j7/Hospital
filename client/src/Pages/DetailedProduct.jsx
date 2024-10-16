@@ -73,6 +73,7 @@ function DetailedProduct() {
               onClick={() => {
                 setCart([...cart, prod]);
                 localStorage.setItem("cart", JSON.stringify([...cart, prod]));
+                //localStorage.setItem("cart", JSON.stringify([...cart, p]));
                 toast.success("Item Added to cart");
               }}
             >
