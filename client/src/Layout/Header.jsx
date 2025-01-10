@@ -13,6 +13,7 @@ function Header() {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     const element = document.documentElement;
@@ -37,7 +38,7 @@ function Header() {
   };
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-[#bfe1f4] fixed z-10 h-1 p-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -76,9 +77,14 @@ function Header() {
             </li>
           </ul>
         </div>
-        <NavLink className="btn btn-ghost text-xl">E-commerce</NavLink>
+        <NavLink
+          to="/"
+          className="btn btn-ghost text-2xl font-bold tracking-wide text-black hover:text-blue-800 transition-colors duration-200 p-2"
+        >
+          Hospital
+        </NavLink>
       </div>
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden lg:flex mt-3">
         <ul className="menu menu-horizontal px-1">
           <li>
             <NavLink to="/" className="hover:border-b-2">
@@ -87,18 +93,21 @@ function Header() {
           </li>
           <li className="">
             <details className="dropdown">
-              <summary className="">category</summary>
+              <summary className="" onMouseEnter={() => setHover(true)}>
+                category
+              </summary>
               <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                 <li>
                   <Link to="/category">All categories</Link>
                 </li>
-                {categories?.map((c) => {
-                  return (
-                    <li className="m-1" key={c.id}>
-                      <Link to={`/category/${c.slug}`}>{c.name}</Link>
-                    </li>
-                  );
-                })}
+                {hover &&
+                  categories?.map((c) => {
+                    return (
+                      <li className="m-1" key={c.id}>
+                        <Link to={`/category/${c.slug}`}>{c.name}</Link>
+                      </li>
+                    );
+                  })}
               </ul>
             </details>
           </li>
@@ -182,14 +191,18 @@ function Header() {
               </svg>
             </label> */}
           </li>
-          <li>
-            <SearchForm />
-          </li>
         </ul>
+        <div className="mb-2">
+          <SearchForm />
+        </div>
       </div>
       <div className="navbar-end">
-        <NavLink className="btn" to="/cart">
-          cart:{cart?.length}
+        <NavLink
+          to="/cart"
+          className="bg-red-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out flex items-center space-x-2"
+        >
+          <span>🚨</span>
+          <span>Critical Patients: {cart?.length}</span>
         </NavLink>
       </div>
     </div>

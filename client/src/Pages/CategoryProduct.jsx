@@ -50,14 +50,9 @@ function CategoryProduct() {
             >
               <Meta title={p.name} description={p.description} />
               <div className="card-name-price mt-3">
-                <h5 className="card-title">
-                  {p.price.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "INR",
-                  })}
-                </h5>
+                <h5 className="card-title">{p.price} years old</h5>
               </div>
-              <div className="mt-3">
+              <div className="mt-3 flex">
                 <Button
                   type="primary"
                   onClick={() => navigate(`/product/${p.slug}`)}
@@ -73,7 +68,7 @@ function CategoryProduct() {
                     toast.success("Item Added to cart");
                   }}
                 >
-                  Add to Cart
+                  Add to Criticals
                 </Button>
               </div>
             </Card>

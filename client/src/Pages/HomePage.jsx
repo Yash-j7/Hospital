@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../Layout/Layout";
 import axios from "axios";
 import { Card, Checkbox, Radio, Button } from "antd";
-import { Prices } from "./Prices";
+import { Age } from "./Prices";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useAuth } from "../context/auth.jsx"; // Import useAuth
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth.jsx";
 import { useCart } from "../context/CartContext.jsx";
 
 const { Meta } = Card;
@@ -15,13 +15,13 @@ function HomePage() {
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
-  //const [cart, setCart] = useState([]); // Define cart state
-  const [cart, setCart] = useCart(); // Define cart state
+  const [cart, setCart] = useCart();
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { auth } = useAuth(); // Use auth from context
+  const { auth } = useAuth();
+
   const getProducts = async () => {
     try {
       setLoading(true);
@@ -48,6 +48,7 @@ function HomePage() {
       console.log(error);
     }
   };
+
   const getTotal = async () => {
     try {
       const { data } = await axios.get(
@@ -58,10 +59,12 @@ function HomePage() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     if (page == 1) return;
     loadmore();
   }, [page]);
+
   const loadmore = async () => {
     try {
       setLoading(true);
@@ -74,6 +77,12 @@ function HomePage() {
       setLoading(false);
       console.log(error);
     }
+  };
+  const truncateDescription = (description, maxLength = 15) => {
+    if (description.length > maxLength) {
+      return description.substring(0, maxLength) + "...";
+    }
+    return description;
   };
   const filterProduct = async () => {
     try {
@@ -112,105 +121,132 @@ function HomePage() {
     }
     setChecked(all);
   };
+  const location = useLocation();
+  const shouldRenderButton = location.pathname === "/";
 
   return (
     <Layout>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-3 p-3 m-3">
-          <h3>Filter by category</h3>
-          <div className="flex flex-col space-y-5 p-3 m-3">
-            {categories?.map((c) => (
-              <Checkbox
-                key={c._id}
-                onChange={(e) => handleFilter(e.target.checked, c._id)}
-              >
-                {c.name}
-              </Checkbox>
-            ))}
-          </div>
-          <div className="">
-            <h3 className="mt-4">Filter By Price</h3>
-            <div>
-              <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-                {Prices?.map((p) => (
-                  <div key={p._id} className="m-2 mt-5">
-                    <Radio value={p.array}>{p.name}</Radio>
+      <div className="container mx-auto px-4 py-8">
+        {/* Filter Section */}
+        <div className="lg:grid lg:grid-cols-12 gap-8 font-serif">
+          {/* Horizontal filter section for mobile */}
+          <div className="lg:col-span-3 p-4 bg-white shadow-md rounded-md lg:flex-col">
+            <h3 className="text-xl font-semibold mb-4">Filters</h3>
+
+            {/* Horizontal filter arrangement on mobile */}
+            <div className="flex flex-col lg:flex-col sm:flex-row flex-wrap gap-4 mb-4">
+              {/* Category Filter */}
+              <div className="sm:flex-row flex-wrap w-full sm:w-1/2 lg:w-full">
+                <h3 className="text-sm font-semibold mb-2">Category</h3>
+                <div className="flex sm:flex-row flex-wrap gap-3">
+                  {categories?.map((c) => (
+                    <Checkbox
+                      key={c._id}
+                      onChange={(e) => handleFilter(e.target.checked, c._id)}
+                    >
+                      {c.name}
+                    </Checkbox>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Filter */}
+              {/* Price Filter */}
+              <div className="w-full sm:w-1/2 lg:w-full">
+                <h3 className="text-sm font-semibold mb-2">Age</h3>
+                <Radio.Group
+                  onChange={(e) => setRadio(e.target.value)}
+                  className="w-full"
+                >
+                  <div className="flex flex-wrap gap-4">
+                    {Age?.map((p) => (
+                      <Radio key={p._id} value={p.array}>
+                        {p.name}
+                      </Radio>
+                    ))}
                   </div>
-                ))}
-              </Radio.Group>
+                </Radio.Group>
+              </div>
             </div>
-            <button
-              className="btn mt-5 btn-error"
+
+            <Button
+              type="danger"
+              className="w-full mt-5"
               onClick={() => window.location.reload()}
             >
-              {" "}
-              Reset Filter
-            </button>
+              Reset Filters
+            </Button>
           </div>
-        </div>
 
-        <div className="col-span-9">
-          <h1 className="text-center text-4xl text-sky-900">Products</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
-            {products?.map((p) => (
-              <Card
-                key={p._id}
-                hoverable
-                style={{ width: 300 }}
-                className="m-3 p-2"
-                cover={
-                  <img
-                    alt={p.name}
-                    src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                  />
-                }
-              >
-                <Meta title={p.name} description={p.description} />
-                <div className="card-name-price mt-3">
-                  <h5 className="card-title">
-                    {p.price.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "INR",
-                    })}
-                  </h5>
-                </div>
-                <div className="mt-3">
-                  <Button
-                    type="primary"
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
-                    More Details
-                  </Button>
-                  <Button
-                    type="default"
-                    className="ml-2"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    Add to Cart
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="m-2 p-3">
-            {products && products.length < total && (
-              <button
-                className="btn btn-info"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(page + 1);
-                }}
-              >
-                {loading ? "loading..." : "loadmore"}
-              </button>
-            )}
+          {/* Products Section */}
+          <div className="lg:col-span-9">
+            <h1 className="text-center text-5xl font-semibold font-mono text-sky-700 mb-8 mt-5 md:mt-1">
+              Patients
+            </h1>
+            <div className="grid grid-cols-2 md:p-3 sm:p-6 lg:grid-cols-3 gap-6">
+              {products?.map((p) => (
+                // Inside your Card component
+                <Card
+                  key={p._id}
+                  hoverable
+                  className="rounded-lg shadow-md"
+                  cover={
+                    <img
+                      alt={p.name}
+                      src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                      className="h-64 w-full object-cover rounded-t-lg"
+                    />
+                  }
+                >
+                  <Meta title={p.name} />
+                  <div className="mt-2 font-semibold">
+                    {truncateDescription(p.description)}
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <p className="text-lg font-semibold">Age:{p.price}</p>
+                    <div className="flex m-2 flex-col gap-y-1">
+                      <Button
+                        type="primary"
+                        onClick={() => navigate(`/product/${p.slug}`)}
+                      >
+                        Details
+                      </Button>
+
+                      <Button
+                        type="default"
+                        className=""
+                        onClick={() => {
+                          setCart([...cart, p]);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify([...cart, p])
+                          );
+                          toast.success("patient added to Critical");
+                        }}
+                      >
+                        Add to Critical
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            <div className="mt-8 text-center">
+              {products && shouldRenderButton && products.length < total && (
+                <Button
+                  type="primary"
+                  loading={loading}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPage(page + 1);
+                  }}
+                >
+                  {loading ? "Loading..." : "Load More"}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

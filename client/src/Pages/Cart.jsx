@@ -20,7 +20,7 @@ function Cart() {
       myCart.splice(idx, 1);
       setCart(myCart);
       localStorage.setItem("cart", JSON.stringify(myCart));
-      toast.success("item removed successfuly");
+      toast.success("Patient removed successfuly");
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +80,7 @@ function Cart() {
         <h1 className="text-3xl font-bold">
           {`Hello ${auth?.user?.name ? auth.user.name : ""}, you have ${
             cart?.length
-          } items in your cart`}
+          } Patients with critical condition`}
         </h1>
         {!auth?.token && (
           <button
@@ -113,10 +113,7 @@ function Cart() {
                     <h2 className="text-2xl font-bold">{p.name}</h2>
                     <p className="text-gray-600">{p.description}</p>
                     <p className="text-lg font-semibold mt-2">
-                      {p.price.toLocaleString("en-US", {
-                        style: "currency",
-                        currency: "INR",
-                      })}
+                      {p.price} years old
                     </p>
                     <button
                       className="p-2 border rounded-lg mt-2 bg-red-400"
@@ -130,25 +127,28 @@ function Cart() {
             )}
           </div>
           <div className="col-span-4 bg-green-100 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
+            <h2 className="text-2xl font-bold mb-4">Patient Summary</h2>
             <p className="text-lg">
-              <span className="font-semibold">Total Items:</span> {cart.length}
+              <span className="font-semibold">Total Patient:</span>{" "}
+              {cart.length}
             </p>
             <p className="text-lg mb-4">
-              <span className="font-semibold">Total Price:</span>{" "}
-              {cart
+              {/* <span className="font-semibold">Total Price:</span>{" "} */}
+              {/* {cart
                 .reduce((total, item) => total + item.price, 0)
                 .toLocaleString("en-US", {
                   style: "currency",
                   currency: "INR",
-                })}
+                })} */}
             </p>
             <button className="btn btn-success w-full">
-              Proceed to Checkout
+              Proceed to Ventilation
             </button>
             {auth?.user?.address ? (
               <div className="mt-2">
-                <h4 className="text-2xl font-semibold">Current Address:</h4>
+                <h4 className="text-2xl font-semibold">
+                  Current Availability at:
+                </h4>
                 <h5 className="text-xl">{auth?.user?.address}</h5>
                 <button
                   onClick={() => navigate("/dashboard/user/profile")}
@@ -176,12 +176,12 @@ function Cart() {
                       })
                     }
                   >
-                    Plase Login to checkout
+                    Plase Login to Allot ventilators
                   </button>
                 )}
               </div>
             )}
-            <div className="mt-2">
+            {/* <div className="mt-2">
               {!clientToken || !auth?.token || !cart?.length ? (
                 ""
               ) : (
@@ -205,7 +205,7 @@ function Cart() {
                   </button>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

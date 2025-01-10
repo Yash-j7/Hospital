@@ -138,7 +138,7 @@ function CreateProduct() {
                 <input
                   type="text"
                   value={name}
-                  placeholder="Product name"
+                  placeholder="Patient name"
                   className="w-full border rounded-lg p-2"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -146,7 +146,7 @@ function CreateProduct() {
               <div>
                 <textarea
                   value={description}
-                  placeholder="Product description"
+                  placeholder="Patient description"
                   className="w-full border rounded-lg p-2"
                   rows="4"
                   onChange={(e) => setDescription(e.target.value)}
@@ -156,7 +156,7 @@ function CreateProduct() {
                 <input
                   type="number"
                   value={price}
-                  placeholder="Product price"
+                  placeholder="Patient Age"
                   className="w-full border rounded-lg p-2"
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -165,14 +165,14 @@ function CreateProduct() {
                 <input
                   type="number"
                   value={quantity}
-                  placeholder="Product quantity"
+                  placeholder="Patient Relatives"
                   className="w-full border rounded-lg p-2"
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
               <div>
                 <Select
-                  placeholder="Select shipping option"
+                  placeholder="Have you been in this Hospital before"
                   size="large"
                   className="w-full border rounded-lg"
                   onChange={(val) => setShipping(val)}
@@ -186,7 +186,7 @@ function CreateProduct() {
                   type="submit"
                   className="w-full bg-blue-500 text-white rounded-lg p-2"
                 >
-                  CREATE PRODUCT
+                  Entry Patient
                 </button>
               </div>
             </form>

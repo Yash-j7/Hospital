@@ -11,11 +11,11 @@ function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [auth, setAuth] = useAuth();
   const [status, setStatus] = useState([
-    "Not Process",
-    "Processing",
-    "Shipped",
-    "delivered",
-    "cancel",
+    "Appointment",
+    "checkup",
+    "Report",
+    "Feedback",
+    "discharge",
   ]);
   const getOrders = async () => {
     try {
@@ -70,7 +70,7 @@ function AdminOrders() {
           <div className="md:col-span-9">
             <div className="bg-white shadow-md rounded-lg p-4">
               <div className="text-center font-bold text-4xl mb-8 mt-5">
-                All Orders
+                Processing
               </div>
               {orders.length > 0 ? (
                 orders.map((o, i) => (
@@ -80,10 +80,10 @@ function AdminOrders() {
                         <tr>
                           <th className="px-4 py-2 border-b">#</th>
                           <th className="px-4 py-2 border-b">Status</th>
-                          <th className="px-4 py-2 border-b">Buyer</th>
+                          <th className="px-4 py-2 border-b">Patient</th>
                           <th className="px-4 py-2 border-b">Date</th>
                           <th className="px-4 py-2 border-b">Payment</th>
-                          <th className="px-4 py-2 border-b">Quantity</th>
+                          <th className="px-4 py-2 border-b">Due</th>
                         </tr>
                       </thead>
 

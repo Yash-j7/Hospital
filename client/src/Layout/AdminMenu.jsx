@@ -25,7 +25,7 @@ const AdminMenu = () => {
               }`
             }
           >
-            Create Product
+            Entry Patient
           </NavLink>
           <NavLink
             to="/dashboard/admin/products"
@@ -35,7 +35,7 @@ const AdminMenu = () => {
               }`
             }
           >
-            Products
+            Patients
           </NavLink>
           <NavLink
             to="/dashboard/admin/orders"
@@ -45,9 +45,9 @@ const AdminMenu = () => {
               }`
             }
           >
-            Orders
+            Processings
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/dashboard/admin/users"
             className={({ isActive }) =>
               `block py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition duration-300 ${
@@ -56,7 +56,7 @@ const AdminMenu = () => {
             }
           >
             Users
-          </NavLink>
+          </NavLink> */}
         </nav>
       </div>
     </div>

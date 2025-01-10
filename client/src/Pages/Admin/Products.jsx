@@ -41,7 +41,7 @@ function Products() {
             <AdminMenu />
           </div>
           <div className="col-span-9">
-            <h1 className="text-2xl font-bold mb-4 text-center">Products</h1>
+            <h1 className="text-2xl font-bold mb-4 text-center">Patients</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {products?.map((p) => (
                 <div
